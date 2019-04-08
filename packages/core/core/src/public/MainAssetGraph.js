@@ -4,6 +4,7 @@ import type AssetGraph from '../AssetGraph';
 import type {
   Asset,
   Dependency as IDependency,
+  FilePath,
   GraphTraversalCallback,
   MainAssetGraph as IMainAssetGraph,
   MainAssetGraphTraversable
@@ -71,5 +72,9 @@ export default class MainAssetGraph implements IMainAssetGraph {
         return visit(node.value, ...args);
       }
     });
+  }
+
+  _dumpToGraphViz(name: string): Promise<FilePath> {
+    return this.#graph._dumpToGraphViz(name);
   }
 }

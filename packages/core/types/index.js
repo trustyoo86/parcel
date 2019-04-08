@@ -307,6 +307,7 @@ export type MainAssetGraphTraversable =
 
 // Always read-only.
 export interface MainAssetGraph extends AssetGraphLike {
+  _dumpToGraphViz(string): Promise<FilePath>;
   createBundle(asset: Asset): MutableBundle;
   traverse<TContext>(
     visit: GraphTraversalCallback<MainAssetGraphTraversable, TContext>
@@ -321,6 +322,7 @@ export interface Bundle extends AssetGraphLike {
   +target: ?Target;
   +filePath: ?FilePath;
   +stats: Stats;
+  _dumpToGraphViz(string): Promise<FilePath>;
   getBundleGroups(): Array<BundleGroup>;
   getBundlesInGroup(BundleGroup): Array<Bundle>;
   getDependencies(asset: Asset): Array<Dependency>;
@@ -351,6 +353,7 @@ export type BundleGroup = {
 };
 
 export interface BundleGraph {
+  _dumpToGraphViz(string): Promise<FilePath>;
   addBundle(bundleGroup: BundleGroup, bundle: Bundle): void;
   addBundleGroup(parentBundle: ?Bundle, bundleGroup: BundleGroup): void;
   findBundlesWithAsset(asset: Asset): Array<MutableBundle>;
@@ -431,7 +434,14 @@ type TransformingProgressEvent = {|
 
 type BundlingProgressEvent = {|
   type: 'buildProgress',
-  phase: 'bundling'
+  phase: 'bundling',
+  assetGraph: MainAssetGraph
+|};
+
+type BundleFinishedProgressEvent = {|
+  type: 'buildProgress',
+  phase: 'bundleFinished',
+  bundleGraph: BundleGraph
 |};
 
 type PackagingProgressEvent = {|
@@ -450,6 +460,7 @@ export type BuildProgressEvent =
   | ResolvingProgressEvent
   | TransformingProgressEvent
   | BundlingProgressEvent
+  | BundleFinishedProgressEvent
   | PackagingProgressEvent
   | OptimizingProgressEvent;
 

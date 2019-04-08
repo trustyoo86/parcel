@@ -35,23 +35,32 @@ export default class BundlerRunner {
   }
 
   async bundle(graph: AssetGraph): Promise<InternalBundleGraph> {
+    let mainAssetGraph = new MainAssetGraph(graph);
     report({
       type: 'buildProgress',
-      phase: 'bundling'
+      phase: 'bundling',
+      assetGraph: mainAssetGraph
     });
 
     let bundler = await this.config.getBundler();
 
-    let bundleGraph = new InternalBundleGraph();
+    let internalBundleGraph = new InternalBundleGraph();
+    let bundleGraph = new BundleGraph(internalBundleGraph);
     await bundler.bundle(
-      new MainAssetGraph(graph),
-      new BundleGraph(bundleGraph),
+      mainAssetGraph,
+      new BundleGraph(internalBundleGraph),
       this.options
     );
-    await this.nameBundles(bundleGraph);
-    await this.applyRuntimes(bundleGraph);
+    await this.nameBundles(internalBundleGraph);
+    await this.applyRuntimes(internalBundleGraph);
 
-    return bundleGraph;
+    report({
+      type: 'buildProgress',
+      phase: 'bundleFinished',
+      bundleGraph
+    });
+
+    return internalBundleGraph;
   }
 
   async nameBundles(bundleGraph: InternalBundleGraph): Promise<void> {

@@ -118,6 +118,10 @@ export class Bundle implements IBundle {
       }
     });
   }
+
+  _dumpToGraphViz(name: string): Promise<FilePath> {
+    return this.#bundle.assetGraph._dumpToGraphViz(name);
+  }
 }
 
 export class MutableBundle extends Bundle implements IMutableBundle {

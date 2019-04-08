@@ -68,11 +68,13 @@ describe('SimpleCLIReporter', () => {
   });
 
   it('writes buildProgress messages to stdout on the default loglevel', () => {
+    // $FlowFixMe
     _report({type: 'buildProgress', phase: 'bundling'}, {});
     assert.equal(stdoutOutput, 'Bundling...\n');
   });
 
   it('writes buildSuccess messages to stdout on the default loglevel', () => {
+    // $FlowFixMe
     _report({type: 'buildProgress', phase: 'bundling'}, {});
     assert.equal(stdoutOutput, 'Bundling...\n');
   });

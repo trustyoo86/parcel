@@ -29,6 +29,7 @@
     "commander": "^2.11.0",
     "dotenv": "^5.0.0",
     "dotenv-expand": "^4.2.0",
+    "graphviz": "^0.0.9",
     "json5": "^1.0.1",
     "micromatch": "^3.0.4",
     "minimatch": "^3.0.4",
@@ -37,6 +38,7 @@
     "pretty-format": "^23.5.0",
     "resolve-from": "^4.0.0",
     "semver": "^5.4.1",
+    "tempy": "^0.2.1",
     "v8-compile-cache": "^2.0.0"
   },
   "devDependencies": {

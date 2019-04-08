@@ -118,8 +118,8 @@ export default class Parcel {
       });
 
       let startTime = Date.now();
-      let assetGraph = await this.assetGraphBuilder.build();
 
+      let assetGraph = await this.assetGraphBuilder.build();
       let bundleGraph = await this.bundle(assetGraph);
       await this.package(bundleGraph);
 

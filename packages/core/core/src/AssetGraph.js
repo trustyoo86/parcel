@@ -23,6 +23,7 @@ import invariant from 'assert';
 import Graph from './Graph';
 import {md5FromString} from '@parcel/utils/src/md5';
 import Dependency from './Dependency';
+import dumpGraphToGraphViz from './dumpGraphToGraphViz';
 
 export const nodeFromRootDir = (rootDir: string): RootNode => ({
   id: rootDir,
@@ -316,5 +317,9 @@ export default class AssetGraph extends Graph<AssetGraphNode> {
       id: 'asset_reference:' + assetNode.id,
       value: asset
     });
+  }
+
+  _dumpToGraphViz(name: string): Promise<string> {
+    return dumpGraphToGraphViz(this, name);
   }
 }

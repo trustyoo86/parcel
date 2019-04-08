@@ -1,22 +1,22 @@
 // @flow strict-local
 
-import type {BundleNode} from '../types';
-
 import type {
   Asset,
   Bundle,
   BundleGraph as IBundleGraph,
   BundleGroup,
+  FilePath,
   GraphTraversalCallback,
   MutableBundle as IMutableBundle
 } from '@parcel/types';
-
 import type InternalBundleGraph from '../BundleGraph';
+import type {BundleNode} from '../types';
 
+import {getBundleGroupId} from './utils';
+import {MutableBundle, bundleToInternal} from './Bundle';
+import dumpGraphToGraphViz from '../dumpGraphToGraphViz';
 import invariant from 'assert';
 import nullthrows from 'nullthrows';
-import {MutableBundle, bundleToInternal} from './Bundle';
-import {getBundleGroupId} from './utils';
 
 export default class BundleGraph implements IBundleGraph {
   #graph; // InternalBundleGraph
@@ -172,5 +172,10 @@ export default class BundleGraph implements IBundleGraph {
     this.#graph.traverseBundles((bundle, ...args) => {
       visit(new MutableBundle(bundle), ...args);
     });
+  }
+
+  _dumpToGraphViz(name: string): Promise<FilePath> {
+    // $FlowFixMe
+    return dumpGraphToGraphViz(this.#graph, name);
   }
 }
